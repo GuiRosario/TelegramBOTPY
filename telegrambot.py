@@ -11,7 +11,7 @@ import time
 import schedule
 
 app = Flask(__name__)
-
+PORT = int(os.environ.get('PORT', 5000))
 FF_options = webdriver.FirefoxOptions()
 FF_profile = webdriver.FirefoxProfile()
 FF_options.add_argument("-headless")
@@ -49,5 +49,4 @@ def TelegramBot():
         time.sleep(1)
 
     bot.polling()
-
-app.run(host='0.0.0.0', port=8080)
+app.run(host='0.0.0.0', port=PORT)
