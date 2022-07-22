@@ -11,7 +11,7 @@ import time
 import schedule
 
 app = Flask(__name__)
-PORT = int(os.environ.get('PORT', 5000))
+
 FF_options = webdriver.FirefoxOptions()
 FF_profile = webdriver.FirefoxProfile()
 FF_options.add_argument("-headless")
@@ -19,6 +19,7 @@ FF_profile.update_preferences()
 
 @app.route('/')
 def TelegramBot():
+    PORT = int(os.environ.get('PORT', 5000))
     link = 'https://ava.uft.edu.br/palmas/login/index.php'
     CHAVE_API = os.getenv('CHAVE_API')
     USER_ID = os.getenv('USER_ID')
