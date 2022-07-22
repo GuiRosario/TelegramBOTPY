@@ -4,6 +4,7 @@ from flask import Flask
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from dotenv import load_dotenv
 from selenium.webdriver.support import expected_conditions as EC
 import time
@@ -20,7 +21,8 @@ def TelegramBot():
     senha = os.getenv('senha')
 
     load_dotenv()
-    navegador = webdriver.Firefox()
+    binary = FirefoxBinary('path/to/installed firefox binary')
+    navegador = webdriver.Firefox(firefox_binary=binary)
     navegador.get(url=link)
     bot = telebot.TeleBot(CHAVE_API)
 
@@ -36,7 +38,7 @@ def TelegramBot():
         materias = WebDriverWait(navegador, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
         bot.send_message(USER_ID, materias.text)
 
-    schedule.every().day.at("19:29").do(MandarMensagem)
+    schedule.every().day.at("19:37").do(MandarMensagem)
 
     while True:
         schedule.run_pending()
