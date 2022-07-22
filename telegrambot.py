@@ -4,7 +4,7 @@ from flask import Flask
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+
 from dotenv import load_dotenv
 from selenium.webdriver.support import expected_conditions as EC
 import time
@@ -12,10 +12,12 @@ import schedule
 
 app = Flask(__name__)
 
-FF_options = webdriver.FirefoxOptions()
-FF_profile = webdriver.FirefoxProfile()
-FF_options.add_argument("-headless")
-FF_profile.update_preferences()
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 @app.route('/')
 def TelegramBot():
