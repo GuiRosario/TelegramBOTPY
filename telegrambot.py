@@ -27,7 +27,7 @@ def TelegramBot():
     senha = os.getenv('senha')
 
     load_dotenv()
-    navegador = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options)
+    navegador = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
     navegador.get(url=link)
     bot = telebot.TeleBot(CHAVE_API)
 
@@ -50,3 +50,6 @@ def TelegramBot():
         time.sleep(1)
 
     bot.polling()
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT",5000))
+    app.run(host='0.0.0.0', port=port)
