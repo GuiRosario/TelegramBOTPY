@@ -12,6 +12,11 @@ import schedule
 
 app = Flask(__name__)
 
+FF_options = webdriver.FirefoxOptions()
+FF_profile = webdriver.FirefoxProfile()
+FF_options.add_argument("-headless")
+FF_profile.update_preferences()
+
 @app.route('/')
 def TelegramBot():
     link = 'https://ava.uft.edu.br/palmas/login/index.php'
@@ -21,8 +26,7 @@ def TelegramBot():
     senha = os.getenv('senha')
 
     load_dotenv()
-    binary = FirefoxBinary('path/to/installed firefox binary')
-    navegador = webdriver.Firefox(firefox_binary=binary)
+    navegador = webdriver.Firefox(options=FF_options, firefox_profile=FF_profile, executable_path=os.environ.get("GECKODRIVER_PATH"), firefox_binary=FirefoxBinary(os.environ.get("FIREFOX_BIN")))
     navegador.get(url=link)
     bot = telebot.TeleBot(CHAVE_API)
 
@@ -38,7 +42,7 @@ def TelegramBot():
         materias = WebDriverWait(navegador, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
         bot.send_message(USER_ID, materias.text)
 
-    schedule.every().day.at("19:37").do(MandarMensagem)
+    schedule.every().day.at("19:29").do(MandarMensagem)
 
     while True:
         schedule.run_pending()
