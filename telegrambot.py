@@ -1,4 +1,5 @@
 import os
+import telebot
 from flask import Flask
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -35,7 +36,7 @@ def TelegramBot():
         materias = WebDriverWait(navegador, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
         bot.send_message(USER_ID, materias.text)
 
-    schedule.every().day.at("18:43").do(MandarMensagem)
+    schedule.every().day.at("18:47").do(MandarMensagem)
 
     while True:
         schedule.run_pending()
