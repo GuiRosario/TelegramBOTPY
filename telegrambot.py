@@ -19,7 +19,6 @@ FF_profile.update_preferences()
 
 @app.route('/')
 def TelegramBot():
-    PORT = int(os.environ.get('PORT', 5000))
     link = 'https://ava.uft.edu.br/palmas/login/index.php'
     CHAVE_API = os.getenv('CHAVE_API')
     USER_ID = os.getenv('USER_ID')
@@ -50,4 +49,4 @@ def TelegramBot():
         time.sleep(1)
 
     bot.polling()
-app.run(host='0.0.0.0', port=PORT)
+app.run(host='0.0.0.0', port=5000)
