@@ -10,6 +10,10 @@ from typing import List
 
 #Inicia Aplicação Flask
 app = Flask(__name__)
+
+port = int(os.environ.get("PORT"),5000)
+app.run(host='0.0.0.0', port=port)
+
 #Carrega os dados do arquivo .env
 load_dotenv()
 #link para url que desejamos acessar
@@ -57,15 +61,9 @@ def MandarMensagem():
     exercicio = asyncio.get_event_loop().run_until_complete(main())
     bot.send_message(USER_ID,exercicio)
 
-schedule.every().day.at("20:45").do(MandarMensagem)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+MandarMensagem()
 
 bot.polling()
 @app.route('/')
 def Hello():
     return "Hello"
-port = int(os.environ.get("PORT"),5000)
-app.run(host='0.0.0.0', port=port)
