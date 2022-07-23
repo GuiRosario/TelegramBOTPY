@@ -1,45 +1,63 @@
 import os
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import asyncio
+from pyppeteer import launch
 import telebot
-from flask import Flask
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from dotenv import load_dotenv
-from selenium.webdriver.support import expected_conditions as EC
 import time
 import schedule
+from flask import Flask
+from typing import List
 
+#Inicia Aplicação Flask
 app = Flask(__name__)
+#Carrega os dados do arquivo .env
 load_dotenv()
+#link para url que desejamos acessar
 link = 'https://ava.uft.edu.br/palmas/login/index.php'
-CHAVE_API = os.environ.get("CHAVE_API")
-USER_ID = os.environ.get("user_id")
-username = os.environ.get("user_name")
-senha = os.environ.get("password")
 
-
-#options = Options()
-#options.add_argument("--headless")
-#driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-#driver.get(link)
+CHAVE_API = os.getenv("CHAVE_API")
+USER_ID = os.getenv("USER_ID")
+username = os.getenv("username")
+senha = os.getenv("senha")
 bot = telebot.TeleBot(CHAVE_API)
 
-#campo_username = driver.find_element(By.ID,'username')
-#campo_username.send_keys(username)
-#campo_password = driver.find_element(By.ID,'password')
-#campo_password.send_keys(senha)
-#botao_entrar = driver.find_element(By.ID,'loginbtn')
-#botao_entrar.click()
 
+async def main():
+    browser = await launch()
+
+    page = await browser.newPage()
+
+    await page.goto(link)
+
+    entry_box = await page.querySelector("#username")
+
+    await entry_box.type(username)
+
+    entry_box = await page.querySelector("#password")
+
+    await entry_box.type(senha)
+
+    login_button = await page.querySelector("#loginbtn")
+
+    await login_button.click()
+
+    await page.waitFor(4000)
+
+    frase = await page.querySelector("h6.event-name.text-truncate.mb-0")
+
+    atividade = await frase.getProperty("textContent")
+
+    print(await atividade.jsonValue())
+
+    await browser.close()
+    
+    return await atividade.jsonValue()
 
 def MandarMensagem():
-    #materias = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
-    bot.send_message(USER_ID, "HELOO")
+    exercicio = asyncio.get_event_loop().run_until_complete(main())
+    bot.send_message(USER_ID,exercicio)
 
-schedule.every(1).minutes.do(MandarMensagem)
+schedule.every().day.at("20:32").do(MandarMensagem)
 
 while True:
     schedule.run_pending()
@@ -49,5 +67,5 @@ bot.polling()
 @app.route('/')
 def Hello():
     return "Hello"
-port = int(os.environ.get("PORT"),5000)
-app.run(host='0.0.0.0', port=port)
+
+app.run(host='0.0.0.0', port=5013)
