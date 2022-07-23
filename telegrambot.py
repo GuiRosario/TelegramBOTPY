@@ -38,12 +38,9 @@ def  load_driver():
 
 	return firefox_driver
 
-def  start():
-	navegador = load_driver()
-	navegador.get(link)
 
-if  __name__ == "__main__":
-	start()
+navegador = load_driver()
+navegador.get(link)
 
 bot = telebot.TeleBot(CHAVE_API)
 
