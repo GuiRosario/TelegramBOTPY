@@ -14,4 +14,4 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 
 driver.get('https://www.google.com/')
 
-print(drive.page_source)
+print(driver.page_source)
