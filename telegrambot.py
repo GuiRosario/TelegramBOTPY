@@ -14,6 +14,8 @@ import time
 import schedule
 
 app = Flask(__name__)
+
+
 link = 'https://ava.uft.edu.br/palmas/login/index.php'
 load_dotenv()
 CHAVE_API = os.getenv('CHAVE_API')
