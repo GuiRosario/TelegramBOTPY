@@ -57,7 +57,7 @@ def MandarMensagem():
     exercicio = asyncio.get_event_loop().run_until_complete(main())
     bot.send_message(USER_ID,exercicio)
 
-schedule.every().day.at("20:32").do(MandarMensagem)
+schedule.every().day.at("20:45").do(MandarMensagem)
 
 while True:
     schedule.run_pending()
