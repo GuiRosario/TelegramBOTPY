@@ -39,7 +39,7 @@ def MandarMensagem():
     materias = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
     bot.send_message(USER_ID, materias.text)
 
-schedule.every().day.at("13:15").do(MandarMensagem)
+schedule.every().day.at("13:42").do(MandarMensagem)
 
 while True:
     schedule.run_pending()
