@@ -21,23 +21,23 @@ username = os.environ.get("user_name")
 senha = os.environ.get("password")
 
 
-options = Options()
-options.add_argument("--headless")
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-driver.get(link)
+#options = Options()
+#options.add_argument("--headless")
+#driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+#driver.get(link)
 bot = telebot.TeleBot(CHAVE_API)
 
-campo_username = driver.find_element(By.ID,'username')
-campo_username.send_keys(username)
-campo_password = driver.find_element(By.ID,'password')
-campo_password.send_keys(senha)
-botao_entrar = driver.find_element(By.ID,'loginbtn')
-botao_entrar.click()
+#campo_username = driver.find_element(By.ID,'username')
+#campo_username.send_keys(username)
+#campo_password = driver.find_element(By.ID,'password')
+#campo_password.send_keys(senha)
+#botao_entrar = driver.find_element(By.ID,'loginbtn')
+#botao_entrar.click()
 
 
 def MandarMensagem():
-    materias = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
-    bot.send_message(USER_ID, materias.text)
+    #materias = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
+    bot.send_message(USER_ID, "HELOO")
 
 schedule.every(1).minutes.do(MandarMensagem)
 
