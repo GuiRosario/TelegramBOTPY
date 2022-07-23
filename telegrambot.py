@@ -34,7 +34,7 @@ def  load_driver():
 
 	binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
 
-	firefox_driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
+	firefox_driver = webdriver.Firefox(firefox_binary=(GeckoDriverManager().install()))
 
 	return firefox_driver
 
