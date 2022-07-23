@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.firefox.service import Service
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from dotenv import load_dotenv
 from selenium.webdriver.support import expected_conditions as EC
@@ -32,10 +34,7 @@ def  load_driver():
 
 	binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
 
-	firefox_driver = webdriver.Firefox(
-		firefox_binary=binary,
-		executable_path=os.environ.get('GECKODRIVER_PATH'),
-		options=options)
+	firefox_driver = webdriver.Firefox(service=Service(executable_path=GeckoDriverManager().install()))
 
 	return firefox_driver
 
@@ -59,7 +58,7 @@ def MandarMensagem():
     materias = WebDriverWait(navegador, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
     bot.send_message(USER_ID, materias.text)
 
-schedule.every().day.at("21:35").do(MandarMensagem)
+schedule.every().day.at("21:45").do(MandarMensagem)
 
 while True:
     schedule.run_pending()
