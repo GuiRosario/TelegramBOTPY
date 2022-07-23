@@ -1,13 +1,10 @@
 import os
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
-op = webdriver.ChromeOptions()
-op.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-op.add_argument("--headless")
-op.add_argument("--no-sandbox")
-op.add_argument("--disable-dev-sh-usage")
+service = Service(executable_path=ChromeDriverManager().install())
 
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=op)
+driver = webdriver.Chrome(service=service)
 
-driver.get("https://youtube.com")
-print(driver.page_source)
+driver.get("https://google.com")
+
