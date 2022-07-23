@@ -3,6 +3,8 @@ import telebot
 from flask import Flask
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.support.ui import WebDriverWait
 from dotenv import load_dotenv
 from selenium.webdriver.support import expected_conditions as EC
@@ -17,14 +19,33 @@ USER_ID = os.getenv('USER_ID')
 username = os.getenv('username')
 senha = os.getenv('senha')
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
+def  load_driver():
+	options = webdriver.FirefoxOptions()
+	
+	# enable trace level for debugging 
+	options.log.level = "trace"
 
-navegador = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-navegador.get(url=link)
+	options.add_argument("-remote-debugging-port=9224")
+	options.add_argument("-headless")
+	options.add_argument("-disable-gpu")
+	options.add_argument("-no-sandbox")
+
+	binary = FirefoxBinary(os.environ.get('FIREFOX_BIN'))
+
+	firefox_driver = webdriver.Firefox(
+		firefox_binary=binary,
+		executable_path=os.environ.get('GECKODRIVER_PATH'),
+		options=options)
+
+	return firefox_driver
+
+def  start():
+	navegador = load_driver()
+	navegador.get(link)
+
+if  __name__ == "__main__":
+	start()
+
 bot = telebot.TeleBot(CHAVE_API)
 
 campo_username = navegador.find_element(By.ID,'username')
@@ -34,12 +55,11 @@ campo_password.send_keys(senha)
 botao_entrar = navegador.find_element(By.ID,'loginbtn')
 botao_entrar.click()
 
-
 def MandarMensagem():
     materias = WebDriverWait(navegador, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR,"h6.event-name.text-truncate.mb-0")))
     bot.send_message(USER_ID, materias.text)
 
-schedule.every().day.at("21:15").do(MandarMensagem)
+schedule.every().day.at("21:35").do(MandarMensagem)
 
 while True:
     schedule.run_pending()
