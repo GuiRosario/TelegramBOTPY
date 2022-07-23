@@ -5,7 +5,6 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import telebot
 from flask import Flask
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from dotenv import load_dotenv
@@ -16,10 +15,10 @@ import schedule
 app = Flask(__name__)
 load_dotenv()
 link = 'https://ava.uft.edu.br/palmas/login/index.php'
-CHAVE_API = os.getenv('CHAVE_API')
-USER_ID = os.getenv('USER_ID')
-username = os.getenv('username')
-senha = os.getenv('senha')
+CHAVE_API = os.environ.get("CHAVE_API")
+USER_ID = os.environ.get("user_id")
+username = os.environ.get("user_name")
+senha = os.environ.get("password")
 
 
 options = Options()
